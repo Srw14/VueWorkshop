@@ -8,6 +8,7 @@ require('dotenv').config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
+var provincesRouter = require('./routes/locations');
 
 const {DB_HOST,DB_PORT,DB_NAME} = process.env
 const mongoose = require('mongoose')
@@ -37,7 +38,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/products', productsRouter)
+app.use('/products', productsRouter);
+app.use('/location', provincesRouter);
 
 app.use(function(req, res, next) {
   next(createError(404));

@@ -65,8 +65,9 @@
                 <v-card class="rounded-xl mb-3" width="40vh" height="55vh" @click="goToProductDetail(item._id)">
                     <v-img :src="'http://127.0.0.1:3000/' + item.mainimg" max-height="300" max-width="500"
                         class="mx-auto" />
-                    <v-card-title primary-title style="font-size: 3vh; font-weight: 1000">{{ item.productname }}<br />{{
-                        item.price }}$</v-card-title>
+                    <v-card-title primary-title style="font-size: 3vh; font-weight: 1000">{{ textsize(item.productname,
+                        25) }}<br />{{
+                            item.price }}$</v-card-title>
                     <v-card-actions>
                         <!-- Actions for Card 1 -->
                     </v-card-actions>
@@ -77,7 +78,7 @@
             <v-col cols="12" md="6" class="d-flex justify-center">
                 <v-btn rounded block outlined color="#000" @click="toggleShowAll">{{
                     showAll ? "Show Less" : "ViewAll"
-                    }}</v-btn>
+                }}</v-btn>
             </v-col>
         </v-row>
     </div>
@@ -106,6 +107,12 @@ export default {
         this.getProduct();
     },
     methods: {
+        textsize(text, length) {
+            if (text.length > length) {
+                return text.substring(0, length) + '...';
+            }
+            return text;
+        },
         goToProductDetail(id) {
             this.$router.push(`/product/${id}`);
         },

@@ -7,7 +7,13 @@ const products = new mongoose.Schema({
   userid: { type: String },
   price: { type: String },
   amonut: { type: String },
-  detail: { type: String },
+  detail: [
+    {
+      color: { type: String},
+      size: { type: String},
+      amonut: { type: Number},
+    },
+  ],
 });
 
 module.exports = mongoose.model("products", products);
