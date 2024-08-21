@@ -9,7 +9,7 @@
                     Enter your email to join us or sign in.
                 </p>
                 <v-text-field v-model="logindata.email" label="Email*" outlined class="input-field"></v-text-field>
-                <v-text-field v-model="logindata.password" label="Password*" outlined
+                <v-text-field v-model="logindata.password" label="Password*" type="password" outlined
                     class="input-field"></v-text-field>
                 <div style="margin-top: 5vh;">
                     <v-btn rounded block @click="seveLoginData()" class="white--text" color="#000">Login</v-btn>

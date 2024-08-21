@@ -11,20 +11,20 @@
     </v-container>
     <v-container>
       <v-row>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="3">
           <v-card class="rounded-lg">
             <div style="text-align: center; ">
               <v-icon style="margin-top: 5vh;" size="150px">mdi-account-circle-outline</v-icon>
             </div>
             <p style="text-align: center; margin-top: 3vh;"><span
                 style="font-size: 2vh; font-family: sans-serif; font-weight: 1000;">{{ originalFirstname }} {{
-                originalLastname }}</span><br><span>{{ originalEmail }}</span><br><span>{{ originalEmail }}</span></p>
+                originalLastname }}</span><br><span>{{ originalEmail }}</span><br><span>{{ originalPhonenumber }}</span></p>
                 <v-card-actions>
               <v-btn style=" margin-top: 1.5vh;" block class="white--text" color="#000" @click="logout()">logout</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
-        <v-col cols="12" md="5">
+        <v-col cols="12" md="4">
           <v-card class="rounded-lg">
             <v-card-title>My Profile</v-card-title>
             <v-card-subtitle>Manage and protect your account</v-card-subtitle>
@@ -32,6 +32,33 @@
             <v-row style="padding-left: 4vh;">
               <v-col cols="11">
                 <v-text-field v-model="userData.email" label="Email*" clearable outlined
+                  class="input-field"></v-text-field>
+              </v-col>
+              <v-col cols="5" style="margin-top: -4vh;">
+                <v-text-field v-model="userData.firstname" label="FirstName*" clearable outlined
+                  class="input-field"></v-text-field>
+              </v-col>
+              <v-col cols="6" style="margin-top: -4vh;">
+                <v-text-field v-model="userData.lastname" label="LastName*" clearable outlined
+                  class="input-field"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-card-actions>
+              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()">Save change </v-btn>
+            </v-card-actions>
+            <v-card-actions>
+              <v-btn block outlined color="#000" @click="open()">Add Product</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="5">
+          <v-card class="rounded-lg">
+            <v-card-title>My Address</v-card-title>
+            <v-card-subtitle>Manage your Address</v-card-subtitle>
+            <v-divider style="width: 92%;margin-left: 2vh;  margin-bottom: 3vh;" class="border-opacity-100"></v-divider>
+            <v-row style="padding-left: 4vh;">
+              <v-col cols="11">
+                <v-text-field v-model="userData.email" label="Full Name*" clearable outlined
                   class="input-field"></v-text-field>
               </v-col>
               <v-col cols="5" style="margin-top: -4vh;">
@@ -97,6 +124,7 @@ export default {
       originalEmail: '',
       originalFirstname: '',
       originalLastname: '',
+      originalPhonenumber: '',
       apidata: [],
       postdata: {
         productname: '',
@@ -197,6 +225,7 @@ export default {
           this.originalEmail = data.data.email;
           this.originalFirstname = data.data.firstname;
           this.originalLastname = data.data.lastname;
+          this.originalPhonenumber = data.data.phonenumber
         } else {
           console.error('No UserID');
         }

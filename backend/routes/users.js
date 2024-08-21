@@ -10,12 +10,16 @@ const detoken = require("../middlewares/detoken");
 //create
 router.post("/register", async (req, res) => {
   try {
-    let { email, firstname, lastname, password } = req.body;
+    let { email, firstname, lastname, phonenumber ,password } = req.body;
+    if (!email || !firstname || !lastname || !phonenumber || !password) {
+      return res.status(400).send("error");
+    }
     let hash_password = await bcrypt.hash(password, 10);
     let newUser = new userModel({
       email,
       firstname,
       lastname,
+      phonenumber,
       password: hash_password,
       role: "users",
     });
@@ -91,7 +95,7 @@ router.get("/:id", detoken, async (req, res) => {
 //getByID
 
 //delete
-router.delete("/:id", detoken, async (req, res) => {
+router.delete("/:id",  async (req, res) => {
   try {
     let id = req.params.id;
     await userModel.deleteOne({ _id: id });
