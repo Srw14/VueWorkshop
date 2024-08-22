@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-container>
+      
       <v-breadcrumbs :items="items" class="custom-breadcrumbs">
         <template v-slot:item="{ item }">
           <v-breadcrumbs-item class="custom-breadcrumbs-item" :href="item.href" :disabled="item.disabled">
@@ -18,8 +19,9 @@
             </div>
             <p style="text-align: center; margin-top: 3vh;"><span
                 style="font-size: 2vh; font-family: sans-serif; font-weight: 1000;">{{ originalFirstname }} {{
-                originalLastname }}</span><br><span>{{ originalEmail }}</span><br><span>{{ originalPhonenumber }}</span></p>
-                <v-card-actions>
+                  originalLastname }}</span><br><span>{{ originalEmail }}</span><br><span>{{ originalPhonenumber }}</span>
+            </p>
+            <v-card-actions>
               <v-btn style=" margin-top: 1.5vh;" block class="white--text" color="#000" @click="logout()">logout</v-btn>
             </v-card-actions>
           </v-card>
@@ -44,7 +46,9 @@
               </v-col>
             </v-row>
             <v-card-actions>
-              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()">Save change </v-btn>
+              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()">Save
+                change
+              </v-btn>
             </v-card-actions>
             <v-card-actions>
               <v-btn block outlined color="#000" @click="open()">Add Product</v-btn>
@@ -71,7 +75,9 @@
               </v-col>
             </v-row>
             <v-card-actions>
-              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()">Save change </v-btn>
+              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()">Save
+                change
+              </v-btn>
             </v-card-actions>
             <v-card-actions>
               <v-btn block outlined color="#000" @click="open()">Add Product</v-btn>
@@ -85,15 +91,31 @@
             ADD NEW PRODUCT
           </v-card-title>
           <v-card-text>
-            <v-row>
+            <v-form v-model="valid">
+              <v-row>
               <v-col cols="6">
-                <v-text-field v-model="postdata.productname" label="Name"></v-text-field>
+                <v-text-field v-model="postdata.productname" :rules="nameRules" label="Name" required></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-text-field v-model="postdata.price" label="Price"></v-text-field>
+                <v-text-field v-model="postdata.price" :rules="priceRules" label="Price" type="number" required></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-text-field v-model="postdata.detail" label="Detail"></v-text-field>
+              <v-col cols="6">
+                <v-text-field v-model="postdata.amount" :rules="amountRules" label="Amount" type="number" required></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-select v-model="postdata.category" :rules="categoryRules" :items="categorylist" label="Category" required editable></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-select v-model="postdata.color" :rules="colorRules" :items="colorlist" label="Color" chips multiple required editable></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-select v-model="postdata.size" :rules="sizeRules" :items="sizelist" label="Size" chips multiple required editable></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-select v-model="postdata.brand" :rules="brandRules" :items="brandlist" label="Brand" required></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-select v-model="postdata.ships" :rules="shipsRules" :items="provinceList" item-text="name_en" label="Ships From" required editable></v-select>
               </v-col>
               <v-col cols="6">
                 <v-file-input v-model="postdata.mainimg" label="Main img" truncate-length="14"></v-file-input>
@@ -101,7 +123,11 @@
               <v-col cols="6">
                 <v-file-input v-model="postdata.img" label="img" truncate-length="14" multiple></v-file-input>
               </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="postdata.detail" label="Description" solo></v-textarea>
+              </v-col>
             </v-row>
+            </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -119,6 +145,68 @@
 export default {
   data() {
     return {
+      valid: false,
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
+      priceRules: [
+        v => !!v || 'Price is required',
+      ],
+      amountRules: [
+        v => !!v || 'Amount is required',
+      ],
+      categoryRules: [
+        v => !!v || 'Category is required'
+      ],
+      colorRules: [
+        v => !!v || 'Price is required',
+      ],
+      sizeRules: [
+        v => !!v || 'Amount is required',
+      ],
+      brandRules: [
+        v => !!v || 'Category is required'
+      ],
+      shipsRules: [
+        v => !!v || 'Category is required'
+      ],
+      categorylist: [
+        'T-shirts',
+        'Shirts',
+        'Polo Shirts',
+      ],
+      colorlist: [
+        'Gray',
+        'Brown',
+        'Blue',
+        'Green',
+        'Orange',
+        'Red',
+        'Yellow',
+        'Purple',
+        'Pink',
+        'Black',
+        'White',
+      ],
+      sizelist:[
+        'XS',
+        'S',
+        'M',
+        'L',
+        'XL',
+        'XXL',
+        'XXXL',
+      ],
+      brandlist:[
+        'XS',
+        'S',
+        'M',
+        'L',
+        'XL',
+        'XXL',
+        'XXXL',
+      ],
+      provinceList: [],
       dialogedit: false,
       id: '',
       originalEmail: '',
@@ -129,14 +217,26 @@ export default {
       postdata: {
         productname: '',
         price: '',
-        detail: '',
+        amount: '',
+        category: '',
+        color: '',
+        size: '',
+        brand: '',
+        ships: '',
+        description: '',
         mainimg: '',
         img: '',
       },
       postdefault: {
         productname: '',
         price: '',
-        detail: '',
+        amount: '',
+        category: '',
+        color: '',
+        size: '',
+        brand: '',
+        ships: '',
+        description: '',
         mainimg: '',
         img: '',
       },
@@ -157,6 +257,7 @@ export default {
   },
   created() {
     this.getUserData();
+    this.getProvince();
   },
   methods: {
     open() {
@@ -174,7 +275,13 @@ export default {
         const formData = new FormData();
         formData.append('productname', this.postdata.productname);
         formData.append('price', this.postdata.price);
-        formData.append('detail', this.postdata.detail);
+        formData.append('amount', this.postdata.amount);
+        formData.append('category', this.postdata.category);
+        formData.append('color', this.postdata.color);
+        formData.append('size', this.postdata.size);
+        formData.append('brand', this.postdata.brand);
+        formData.append('ships', this.postdata.ships);
+        formData.append('description', this.postdata.description);
 
         if (this.postdata.mainimg) {
           formData.append('mainimg', this.postdata.mainimg);
@@ -199,6 +306,18 @@ export default {
         console.error('Error:', error.response ? error.response.data : error.message);
         alert(error.response ? error.response.data.message : 'An unexpected error occurred');
       }
+    },
+    getProvince() {
+      this.axios.get('http://127.0.0.1:3000/location/province/', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+      }).then((response) => {
+        console.log(response.data);
+        this.provinceList = response.data.data;
+      }).catch((error) => {
+        console.error('Error:', error.response ? error.response.data : error.message);
+      });
     },
     getProduct() {
       this.axios.get('http://127.0.0.1:3000/products/', {

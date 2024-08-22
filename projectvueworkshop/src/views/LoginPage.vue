@@ -8,16 +8,16 @@
                 <p style="font-weight: 10; font-family: sans-serif;">
                     Enter your email to join us or sign in.
                 </p>
-                <v-text-field v-model="logindata.email" label="Email*" outlined class="input-field"></v-text-field>
-                <v-text-field v-model="logindata.password" label="Password*" type="password" outlined
-                    class="input-field"></v-text-field>
+                <v-form v-model="valid">
+                    <v-text-field v-model="logindata.email" :rules="emailRules" label="Email*" outlined class="input-field" required></v-text-field>
+                    <v-text-field v-model="logindata.password" :rules="passwordRules" label="Password*" type="password" outlined class="input-field" required></v-text-field> 
+                </v-form>
                 <div style="margin-top: 5vh;">
-                    <v-btn rounded block @click="seveLoginData()" class="white--text" color="#000">Login</v-btn>
+                    <v-btn rounded block @click="seveLoginData()" :disabled="!valid" class="white--text" color="#000">Login</v-btn>
                 </div>
                 <p style="font-size: 2vh; margin-top: 3vh; color: #757575;">
                     Don't have an account? <a style="color: #757575;" href="/signup">sign up</a> now
                 </p>
-
             </v-col>
         </v-row>
     </v-container>
@@ -27,6 +27,14 @@
 export default {
     data() {
         return {
+            valid: false,
+            emailRules: [
+                v => !!v || 'E-mail is required',
+                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+            ],
+            passwordRules: [
+                v => !!v || 'Password is required',
+            ],
             id: '',
             apidata: [],
             logindata: {

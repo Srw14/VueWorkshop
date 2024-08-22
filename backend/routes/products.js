@@ -33,7 +33,7 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      let { productname, price, amount, detail } = req.body;
+      let { productname, price, amount, category, color, size, brand, ships, description } = req.body;
       let files = req.files.files;
 
       if (!files || files.length === 0) {
@@ -48,13 +48,26 @@ router.post(
         ? req.files["files"].map((file) => file.path.replace(/\\/g, "/"))
         : [];
 
+      if (typeof color === "string"){
+        color = color.split(',');
+      }
+
+      if (typeof size === "string"){
+        size = size.split(',');
+      }
+
       let newProduct = new productModel({
         mainimg: mainimgPath,
         img: imgPaths,
         productname,
         price,
         amount,
-        detail,
+        category,
+        color,
+        size,
+        brand,
+        ships,
+        description,
         userid: req.userId,
       });
 
