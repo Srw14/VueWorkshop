@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-container>
-      
       <v-breadcrumbs :items="items" class="custom-breadcrumbs">
         <template v-slot:item="{ item }">
           <v-breadcrumbs-item class="custom-breadcrumbs-item" :href="item.href" :disabled="item.disabled">
@@ -118,13 +117,13 @@
                 <v-select v-model="postdata.ships" :rules="shipsRules" :items="provinceList" item-text="name_en" label="Ships From" required editable></v-select>
               </v-col>
               <v-col cols="6">
-                <v-file-input v-model="postdata.mainimg" label="Main img" truncate-length="14"></v-file-input>
+                <v-file-input v-model="postdata.mainimg" :rules="mainimgRules" label="Main Img" truncate-length="14" required></v-file-input>
               </v-col>
               <v-col cols="6">
-                <v-file-input v-model="postdata.img" label="img" truncate-length="14" multiple></v-file-input>
+                <v-file-input v-model="postdata.img" :rules="imgRules" label="Img" truncate-length="14" multiple required></v-file-input>
               </v-col>
               <v-col cols="12">
-                <v-textarea v-model="postdata.detail" label="Description" solo></v-textarea>
+                <v-textarea v-model="postdata.description" :rules="descriptionRules" label="Description" solo required></v-textarea>
               </v-col>
             </v-row>
             </v-form>
@@ -146,66 +145,21 @@ export default {
   data() {
     return {
       valid: false,
-      nameRules: [
-        v => !!v || 'Name is required',
-      ],
-      priceRules: [
-        v => !!v || 'Price is required',
-      ],
-      amountRules: [
-        v => !!v || 'Amount is required',
-      ],
-      categoryRules: [
-        v => !!v || 'Category is required'
-      ],
-      colorRules: [
-        v => !!v || 'Price is required',
-      ],
-      sizeRules: [
-        v => !!v || 'Amount is required',
-      ],
-      brandRules: [
-        v => !!v || 'Category is required'
-      ],
-      shipsRules: [
-        v => !!v || 'Category is required'
-      ],
-      categorylist: [
-        'T-shirts',
-        'Shirts',
-        'Polo Shirts',
-      ],
-      colorlist: [
-        'Gray',
-        'Brown',
-        'Blue',
-        'Green',
-        'Orange',
-        'Red',
-        'Yellow',
-        'Purple',
-        'Pink',
-        'Black',
-        'White',
-      ],
-      sizelist:[
-        'XS',
-        'S',
-        'M',
-        'L',
-        'XL',
-        'XXL',
-        'XXXL',
-      ],
-      brandlist:[
-        'XS',
-        'S',
-        'M',
-        'L',
-        'XL',
-        'XXL',
-        'XXXL',
-      ],
+      nameRules: [ v => !!v || 'Name is required' ],
+      priceRules: [ v => !!v || 'Price is required' ],
+      amountRules: [ v => !!v || 'Amount is required' ],
+      categoryRules: [ v => !!v || 'Category is required' ],
+      colorRules: [ v => !!v || 'Price is required' ],
+      sizeRules: [ v => !!v || 'Amount is required' ],
+      brandRules: [ v => !!v || 'Category is required' ],
+      shipsRules: [ v => !!v || 'Ships From is required' ],
+      descriptionRules: [ v => !!v || 'Description is required' ],
+      mainimgRules: [ v => !!v || 'Main Img is required' ],
+      imgRules: [ v => !!v || 'Img is required' ],
+      categorylist: [ 'T-shirts','Shirts','Polo Shirts'],
+      colorlist: [ 'Gray','Brown','Blue','Green','Orange','Red','Yellow','Purple','Pink','Black','White' ],
+      sizelist:[ 'XS','S','M','L','XL','XXL','XXXL' ],
+      brandlist:[ 'Nike','Zara','H&M','Uniqlo','Adidas' ],
       provinceList: [],
       dialogedit: false,
       id: '',
@@ -241,18 +195,7 @@ export default {
         img: '',
       },
       userData: {},
-      items: [
-        {
-          text: 'Home',
-          disabled: false,
-          href: '/main',
-        },
-        {
-          text: 'Profile',
-          disabled: true,
-          href: '/profile',
-        },
-      ],
+      items: [ { text: 'Home',disabled: false,href: '/main' },{ text: 'Profile',disabled: true,href: '/profile' } ],
     }
   },
   created() {
@@ -282,7 +225,6 @@ export default {
         formData.append('brand', this.postdata.brand);
         formData.append('ships', this.postdata.ships);
         formData.append('description', this.postdata.description);
-
         if (this.postdata.mainimg) {
           formData.append('mainimg', this.postdata.mainimg);
         }
@@ -378,6 +320,34 @@ export default {
       } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
         alert(error.response ? error.response.data.message : 'An unexpected error occurred');
+      }
+    },
+    async putUserAddress() {
+      try {
+        const UserID = localStorage.getItem("UserID");
+        if (UserID) {
+          const response = await fetch(`http://127.0.0.1:3000/users/location/${UserID}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `bearer ${localStorage.getItem("Token")}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              address: this.userData.address,
+              province: this.userData.province,
+              amphure: this.userData.amphure,
+              tambon: this.userData.tambon
+            })
+          });
+          const data = await response.json(); 
+          console.log(data)
+          alert('Profile updated complete')
+        } else {
+          console.error('No UserID found in localStorage'); 
+        }
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        alert(error.respones ? error.respones.data.message: 'An unexpected error occurred')
       }
     },
   }
