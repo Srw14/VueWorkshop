@@ -48,7 +48,7 @@ router.get("/amphure/", async (req, res) => {
 });
 //getAmphure
 
-//getTambone
+//getTambon
 router.get("/tambon/", async (req, res) => {
     try {
         let tambon = await tambonModel.find();
@@ -60,6 +60,6 @@ router.get("/tambon/", async (req, res) => {
         return res.status(err.status || 500).send(err.message);
     }
 });
-//getTambone
+//getTambon
 
 module.exports = router;

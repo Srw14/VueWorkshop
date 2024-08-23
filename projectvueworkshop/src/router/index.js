@@ -25,11 +25,6 @@ const routes = [
     name: "signup",
     component: () => import("../views/SignupPage.vue"),
   },
-  //   {
-  //     path: '/main',
-  //     name: 'main',
-  //     component: () => import('../views/MainPage.vue')
-  // },
   {
     path: "",
     name: "toolbar",
@@ -39,7 +34,7 @@ const routes = [
         path: "/search",
         name: "search",
         component: () => import("../views/SearchBar.vue"),
-        children:[
+        children: [
           {
             path: "/main",
             name: "main",
@@ -60,9 +55,8 @@ const routes = [
             name: "product",
             component: () => import("../views/ProductPage.vue"),
           },
-        ]
+        ],
       },
-      
     ],
   },
 ];

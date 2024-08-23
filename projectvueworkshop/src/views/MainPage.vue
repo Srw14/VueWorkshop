@@ -27,7 +27,7 @@
             <v-col cols="6" sm="6" md="4" lg="2" v-for="(item, index) in displayedItems" :key="index">
                 <v-card class="mb-3" @click="goToProductDetail(item._id)">
                     <v-img :src="'http://127.0.0.1:3000/' + item.mainimg" max-height="200px"  class="mx-auto" />
-                    <v-card-title primary-title style="font-size: 2vh; font-weight: 600;">{{ textsize(item.productname, 20) }}</v-card-title>
+                    <v-card-title primary-title style="font-size: 2vh; font-weight: 600;">{{ textsize(item.productname, 40) }}</v-card-title>
                     <v-card-subtitle style="font-size: 2.5vh; color: #616161;">฿{{ item.price }}</v-card-subtitle>
                     <v-card-actions>
                         <v-btn text color="primary">View Details</v-btn>

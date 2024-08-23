@@ -34,6 +34,33 @@ router.post("/register", async (req, res) => {
 });
 //create
 
+//addNewLocation
+router.put("/location/:id", async (req, res) => {
+  try { 
+    let id = req.params.id;
+    let { address, province, amphure, tambon } = req.body;
+    await userModel.updateOne(
+      { _id: id },
+      {
+        $set: {
+          address,
+          province,
+          amphure,
+          tambon,
+        }
+      }
+    );
+    let user = await userModel.findById(id);
+    return res.status(201).send({
+      data: user,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(err.status || 500).send(err.message);
+  }
+});
+//addNewLocation
+
 //login
 router.post("/login", async (req, res) => {
   try {
@@ -48,8 +75,7 @@ router.post("/login", async (req, res) => {
     }
     let token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
-      process.env.TOKEN_KEY,
-      { expiresIn: "24h" }
+      process.env.TOKEN_KEY
     );
     console.log(token);
     console.log(user.role);
@@ -104,7 +130,7 @@ router.delete("/:id",  async (req, res) => {
     return res.status(err.status || 500).send(err.message);
   }
 });
-//
+//delete
 
 //setRole
 router.put("/setrole/:id", async (req, res) => {
@@ -129,8 +155,6 @@ router.put("/setrole/:id", async (req, res) => {
   }
 });
 //setRole
-
-//
 
 //update
 router.put("/:id", async (req, res) => {

@@ -1,4 +1,3 @@
-// middlewares/detoken.js
 const jwt = require('jsonwebtoken');
 
 const detoken = async (req, res, next) => {

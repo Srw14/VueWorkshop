@@ -79,7 +79,7 @@
               </v-btn>
             </v-card-actions>
             <v-card-actions>
-              <v-btn block outlined color="#000" @click="open()">Add Product</v-btn>
+              <v-btn block outlined color="#000" @click="opendialog()">Add New Address</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -135,10 +135,42 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="addressdialog" max-width="500px">
+        <v-card class="rounded-lg">
+          <v-card-title primary-title>
+            ADD NEW ADDRESS
+          </v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field label="Address"></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-select label="Province"></v-select>
+                </v-col>
+                <v-col cols="6">
+                  <v-select label="District"></v-select>
+                </v-col>
+                <v-col cols="6">
+                  <v-select label="Sub-District"></v-select>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field label="Phone Number"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn outlined color="#000" @click="close()">cancel</v-btn>
+            <v-btn class="white--text" color="#000">save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -149,9 +181,9 @@ export default {
       priceRules: [ v => !!v || 'Price is required' ],
       amountRules: [ v => !!v || 'Amount is required' ],
       categoryRules: [ v => !!v || 'Category is required' ],
-      colorRules: [ v => !!v || 'Price is required' ],
-      sizeRules: [ v => !!v || 'Amount is required' ],
-      brandRules: [ v => !!v || 'Category is required' ],
+      colorRules: [ v => !!v || 'Color is required' ],
+      sizeRules: [ v => !!v || 'Size is required' ],
+      brandRules: [ v => !!v || 'Brand is required' ],
       shipsRules: [ v => !!v || 'Ships From is required' ],
       descriptionRules: [ v => !!v || 'Description is required' ],
       mainimgRules: [ v => !!v || 'Main Img is required' ],
@@ -161,6 +193,7 @@ export default {
       sizelist:[ 'XS','S','M','L','XL','XXL','XXXL' ],
       brandlist:[ 'Nike','Zara','H&M','Uniqlo','Adidas' ],
       provinceList: [],
+      addressdialog: false,
       dialogedit: false,
       id: '',
       originalEmail: '',
@@ -181,18 +214,11 @@ export default {
         mainimg: '',
         img: '',
       },
-      postdefault: {
-        productname: '',
-        price: '',
-        amount: '',
-        category: '',
-        color: '',
-        size: '',
-        brand: '',
-        ships: '',
-        description: '',
-        mainimg: '',
-        img: '',
+      postuser: {
+        address: '',
+        province: '',
+        amphure: '',
+        tambon: '',
       },
       userData: {},
       items: [ { text: 'Home',disabled: false,href: '/main' },{ text: 'Profile',disabled: true,href: '/profile' } ],
@@ -208,6 +234,10 @@ export default {
     },
     close() {
       this.dialogedit = false
+      this.addressdialog = false
+    },
+    opendialog() {
+      this.addressdialog = true
     },
     logout() {
       localStorage.clear();
@@ -228,13 +258,11 @@ export default {
         if (this.postdata.mainimg) {
           formData.append('mainimg', this.postdata.mainimg);
         }
-
         if (this.postdata.img) {
           this.postdata.img.forEach(file => {
             formData.append('files', file);
           });
         }
-
         const { data } = await this.axios.post('http://127.0.0.1:3000/products/add', formData, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem("Token")}`,
@@ -257,6 +285,30 @@ export default {
       }).then((response) => {
         console.log(response.data);
         this.provinceList = response.data.data;
+      }).catch((error) => {
+        console.error('Error:', error.response ? error.response.data : error.message);
+      });
+    },
+    getAmphure() {
+      this.axios.get('http://127.0.0.1:3000/location/amphure/', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+      }).then((response) => {
+        console.log(response.data);
+        this.amphureList = response.data.data;
+      }).catch((error) => {
+        console.error('Error:', error.response ? error.response.data : error.message);
+      });
+    },
+    getTambon() {
+      this.axios.get('http://127.0.0.1:3000/location/tombon/', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+      }).then((response) => {
+        console.log(response.data);
+        this.tambonList = response.data.data;
       }).catch((error) => {
         console.error('Error:', error.response ? error.response.data : error.message);
       });

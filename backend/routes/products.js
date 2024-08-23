@@ -18,20 +18,12 @@ const storage = multer.diskStorage({
   },
 });
 
-
 const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.post(
-  "/add",
-  detoken,
-  upload.fields([
-    { name: "mainimg", maxCount: 1 },
-    { name: "files", maxCount: 5 },
-  ]),
-  async (req, res) => {
+router.post("/add",detoken,upload.fields([{ name: "mainimg", maxCount: 1 },{ name: "files", maxCount: 5 },]),async (req, res) => {
     try {
       let { productname, price, amount, category, color, size, brand, ships, description } = req.body;
       let files = req.files.files;
@@ -84,7 +76,7 @@ router.post(
 );
 //create
 
-//get
+//getAll
 router.get("/", async (req, res) => {
   try {
     let product = await productModel.find();
@@ -96,7 +88,7 @@ router.get("/", async (req, res) => {
     return res.status(err.status || 500).send(err.message);
   }
 });
-//
+//getAll
 
 //getByID
 router.get("/:id", async (req, res) => {
@@ -123,7 +115,7 @@ router.delete("/:id", detoken, async (req, res) => {
     return res.status(err.status || 500).send(err.message);
   }
 });
-//
+//delete
 
 //deleteIMG
 const fs = require("fs");
@@ -149,26 +141,14 @@ router.delete("/:id/:imgPaths", detoken, async (req, res) => {
     return res.status(err.status || 500).send(err.message);
   }
 });
-
-//
+//deleteIMG
 
 //updateIMG
-router.put(
-  "/:id",
-  upload.fields([
-    { name: "mainimg", maxCount: 1 },
-    { name: "files", maxCount: 5 },
-  ]),
-  async (req, res) => {
+router.put("/:id",upload.fields([{ name: "mainimg", maxCount: 1 },{ name: "files", maxCount: 5 },]),async (req, res) => {
     try {
       let id = req.params.id;
-      let mainimgPath = req.files["mainimg"]
-        ? req.files["mainimg"][0].path.replace(/\\/g, "/")
-        : null;
-
-      let imgPaths = req.files["files"]
-        ? req.files["files"].map((file) => file.path.replace(/\\/g, "/"))
-        : [];
+      let mainimgPath = req.files["mainimg"]? req.files["mainimg"][0].path.replace(/\\/g, "/"): null;
+      let imgPaths = req.files["files"]? req.files["files"].map((file) => file.path.replace(/\\/g, "/")): [];
 
       await productModel.updateOne(
         { _id: id },
@@ -186,7 +166,6 @@ router.put(
     }
   }
 );
-
-//
+//updateIMG
 
 module.exports = router;
