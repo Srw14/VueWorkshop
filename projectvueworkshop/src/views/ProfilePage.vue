@@ -16,9 +16,8 @@
             <div style="text-align: center; ">
               <v-icon style="margin-top: 5vh;" size="150px">mdi-account-circle-outline</v-icon>
             </div>
-            <p style="text-align: center; margin-top: 3vh;"><span
-                style="font-size: 2vh; font-family: sans-serif; font-weight: 1000;">{{ originalFirstname }} {{
-                  originalLastname }}</span><br><span>{{ originalEmail }}</span><br><span>{{ originalPhonenumber }}</span>
+            <p style="text-align: center; margin-top: 3vh;">
+              <span style="font-size: 2vh; font-family: sans-serif; font-weight: 1000;">{{ originalFirstname }} {{ originalLastname }}</span><br><span>{{ originalEmail }}</span><br><span>{{ originalPhonenumber }}</span>
             </p>
             <v-card-actions>
               <v-btn style=" margin-top: 1.5vh;" block class="white--text" color="#000" @click="logout()">logout</v-btn>
@@ -32,22 +31,17 @@
             <v-divider style="width: 92%;margin-left: 2vh;  margin-bottom: 3vh;" class="border-opacity-100"></v-divider>
             <v-row style="padding-left: 4vh;">
               <v-col cols="11">
-                <v-text-field v-model="userData.email" label="Email*" clearable outlined
-                  class="input-field"></v-text-field>
+                <v-text-field v-model="userData.email" label="Email*" clearable outlined class="input-field"></v-text-field>
               </v-col>
               <v-col cols="5" style="margin-top: -4vh;">
-                <v-text-field v-model="userData.firstname" label="FirstName*" clearable outlined
-                  class="input-field"></v-text-field>
+                <v-text-field v-model="userData.firstname" label="FirstName*" clearable outlined class="input-field"></v-text-field>
               </v-col>
               <v-col cols="6" style="margin-top: -4vh;">
-                <v-text-field v-model="userData.lastname" label="LastName*" clearable outlined
-                  class="input-field"></v-text-field>
+                <v-text-field v-model="userData.lastname" label="LastName*" clearable outlined class="input-field"></v-text-field>
               </v-col>
             </v-row>
             <v-card-actions>
-              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()">Save
-                change
-              </v-btn>
+              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()"> Save change </v-btn>
             </v-card-actions>
             <v-card-actions>
               <v-btn block outlined color="#000" @click="open()">Add Product</v-btn>
@@ -57,7 +51,7 @@
         <v-col cols="12" md="5">
           <v-card class="rounded-lg">
             <v-card-title>My Address</v-card-title>
-            <v-card-subtitle>Manage your Address</v-card-subtitle>
+            <v-card-subtitle>Manage your address</v-card-subtitle>
             <v-divider style="width: 92%;margin-left: 2vh;  margin-bottom: 3vh;" class="border-opacity-100"></v-divider>
             <v-row style="padding-left: 4vh;">
               <v-col cols="11">
@@ -65,18 +59,14 @@
                   class="input-field"></v-text-field>
               </v-col>
               <v-col cols="5" style="margin-top: -4vh;">
-                <v-text-field v-model="userData.firstname" label="FirstName*" clearable outlined
-                  class="input-field"></v-text-field>
+                <v-text-field v-model="userData.firstname" label="FirstName*" clearable outlined class="input-field"></v-text-field>
               </v-col>
               <v-col cols="6" style="margin-top: -4vh;">
-                <v-text-field v-model="userData.lastname" label="LastName*" clearable outlined
-                  class="input-field"></v-text-field>
+                <v-text-field v-model="userData.lastname" label="LastName*" clearable outlined class="input-field"></v-text-field>
               </v-col>
             </v-row>
             <v-card-actions>
-              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()">Save
-                change
-              </v-btn>
+              <v-btn style=" margin-top: -3vh;" block class="white--text" color="#000" @click="putUserData()"> Save change </v-btn>
             </v-card-actions>
             <v-card-actions>
               <v-btn block outlined color="#000" @click="opendialog()">Add New Address</v-btn>
@@ -86,9 +76,7 @@
       </v-row>
       <v-dialog v-model="dialogedit" max-width="500px">
         <v-card class="rounded-lg">
-          <v-card-title primary-title>
-            ADD NEW PRODUCT
-          </v-card-title>
+          <v-card-title primary-title> ADD NEW PRODUCT </v-card-title>
           <v-card-text>
             <v-form v-model="valid">
               <v-row>
@@ -137,9 +125,7 @@
       </v-dialog>
       <v-dialog v-model="addressdialog" max-width="500px">
         <v-card class="rounded-lg">
-          <v-card-title primary-title>
-            ADD NEW ADDRESS
-          </v-card-title>
+          <v-card-title primary-title> ADD NEW ADDRESS </v-card-title>
           <v-card-text>
             <v-form>
               <v-row>

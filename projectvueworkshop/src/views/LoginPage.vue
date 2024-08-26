@@ -2,12 +2,8 @@
     <v-container>
         <v-row class="align-center justify-center">
             <v-col cols="12" md="6" lg="4">
-                <p style="font-size: 5vh; font-weight: 1000; font-family: sans-serif; margin-top: 11vh; ">
-                    W0rk.Sh
-                </p>
-                <p style="font-weight: 10; font-family: sans-serif;">
-                    Enter your email to join us or sign in.
-                </p>
+                <p style="font-size: 5vh; font-weight: 1000; font-family: sans-serif; margin-top: 11vh; "> W0rk.Sh </p>
+                <p style="font-weight: 10; font-family: sans-serif;"> Enter your email to join us or sign in. </p>
                 <v-form v-model="valid">
                     <v-text-field v-model="logindata.email" :rules="emailRules" label="Email*" outlined class="input-field" required></v-text-field>
                     <v-text-field v-model="logindata.password" :rules="passwordRules" label="Password*" type="password" outlined class="input-field" required></v-text-field> 
@@ -15,9 +11,7 @@
                 <div style="margin-top: 5vh;">
                     <v-btn rounded block @click="seveLoginData()" :disabled="!valid" class="white--text" color="#000">Login</v-btn>
                 </div>
-                <p style="font-size: 2vh; margin-top: 3vh; color: #757575;">
-                    Don't have an account? <a style="color: #757575;" href="/signup">sign up</a> now
-                </p>
+                <p style="font-size: 2vh; margin-top: 3vh; color: #757575;"> Don't have an account? <a style="color: #757575;" href="/signup">sign up</a> now </p>
             </v-col>
         </v-row>
     </v-container>
@@ -28,13 +22,8 @@ export default {
     data() {
         return {
             valid: false,
-            emailRules: [
-                v => !!v || 'E-mail is required',
-                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-            ],
-            passwordRules: [
-                v => !!v || 'Password is required',
-            ],
+            emailRules: [ v => !!v || 'E-mail is required', v => /.+@.+\..+/.test(v) || 'E-mail must be valid' ],
+            passwordRules: [ v => !!v || 'Password is required' ],
             id: '',
             apidata: [],
             logindata: {

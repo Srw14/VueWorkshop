@@ -9,7 +9,6 @@
         </template>
       </v-breadcrumbs>
     </v-container>
-
     <v-container>
       <v-row>
         <v-col cols="12">
@@ -86,14 +85,10 @@ export default {
       });
     },
     getTotal() {
-      // Calculate the total price
       this.total = this.apidata.data.reduce((sum, item) => sum + item.price, 0);
     },
-    // deleteItem(item) {
-    //   // Handle item deletion
-    // },
     checkout() {
-      // Handle checkout process
+      
     },
   },
 };

@@ -31,22 +31,11 @@ export default {
     data() {
         return {
             valid: false,
-            emailRules: [
-                v => !!v || 'E-mail is required',
-                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-            ],
-            fnameRules: [
-                v => !!v || 'First Name is required',
-            ],
-            lnameRules: [
-                v => !!v || 'Last Name is required',
-            ],
-            phonenumberRules: [
-                v => !!v || 'Phone Number is required',
-            ],
-            passwordRules: [
-                v => !!v || 'Password is required',
-            ],
+            emailRules: [ v => !!v || 'E-mail is required', v => /.+@.+\..+/.test(v) || 'E-mail must be valid' ],
+            fnameRules: [ v => !!v || 'First Name is required' ],
+            lnameRules: [ v => !!v || 'Last Name is required' ],
+            phonenumberRules: [ v => !!v || 'Phone Number is required' ],
+            passwordRules: [ v => !!v || 'Password is required' ],
             appbar: false,
             id: '',
             apidata: [],
