@@ -11,48 +11,73 @@
     </v-container>
     <v-container>
       <v-row>
-        <v-col cols="12">
-          <p class="cart-title">Your Cart</p>
-        </v-col>
-        <v-col cols="12" md="4" v-for="(item, index) in apidata.data" :key="index">
-          <v-card class="product-card">
-            <v-img :src="item.mainimg" class="product-img"></v-img>
-            <v-card-title>{{ item.productname }}</v-card-title>
-            <v-card-subtitle>฿{{ item.price }}</v-card-subtitle>
-            <v-card-actions>
-              <v-btn icon @click="deleteItem(item)">
-                <v-icon color="black">mdi-delete</v-icon>
+        <v-col cols="12" md="8">
+          <v-card style="margin-bottom: 3vh;">
+            <div class="d-flex justify-space-between align-center" style="padding-left: 3vh;">
+              <p style="padding-top: 2vh; font-size: 5vh; font-family: sans-serif; font-weight: 1000;">Your Cart</p>
+              <v-btn plain color="error">
+                <v-icon>mdi-trash-can-outline</v-icon>
+                clear
               </v-btn>
-            </v-card-actions>
+            </div>
           </v-card>
+          <v-row>
+            <v-col cols="12" md="12" v-for="(item, index) in apidata.data" :key="index">
+              <v-card>
+                <div class="d-flex justify-space-between align-center" style="padding-left: 3vh;">
+                  <v-row no-gutters>
+                    <v-col cols="auto">
+                      <v-avatar tile size="100" style="margin: 2vh;">
+                        <v-img :src="'http://127.0.0.1:3000/' + item.mainimg" class="product-img" />
+                      </v-avatar>
+                    </v-col>
+                    <v-col>
+                      <v-card-title>{{ item.brand }} {{ item.category }}</v-card-title>
+                      <v-card-subtitle>size: {{ item.size }} <br> color: {{ item.color }} </v-card-subtitle>
+                      <v-card-title style="margin-top: -3vh;">฿{{ item.price }}</v-card-title>
+                    </v-col>
+                    <v-btn plain icon color="error" style="margin-top: 1vh; margin-right: 1vh;">
+                      <v-icon>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </v-row>
+                </div>
+              </v-card>
+            </v-col>
+          </v-row>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-card class="summary-card">
-            <v-card-title>Order Summary</v-card-title>
+        <v-col cols="12" md="4">
+          <v-card>
+              <v-card-subtitle>
+                Location
+                <br>
+                <v-col cols="9">Subtotal (0 items)</v-col>
+              </v-card-subtitle>
+              <v-card-text>
+                <v-divider></v-divider>
+              </v-card-text>
+            <v-card-title>
+              Order Summary
+            </v-card-title>
             <v-card-text>
               <v-row>
-                <v-col cols="8">Subtotal ({{ apidata.data.length }} items)</v-col>
-                <v-col cols="4" class="text-right">฿{{ total }}</v-col>
+                <v-col cols="9">Subtotal (0 items)</v-col>
+                <v-col cols="3">฿10,000</v-col>
               </v-row>
               <v-row>
-                <v-col cols="8">Shipping Fee</v-col>
-                <v-col cols="4" class="text-right">฿0.00</v-col>
+                <v-col cols="9">Shipping Fee</v-col>
+                <v-col cols="3">฿10,000</v-col>
+              </v-row>
+              <v-divider class="mt-4 mb-4"></v-divider>
+              <v-row>
+                <v-col cols="9">Total</v-col>
+                <v-col cols="3">฿10,000</v-col>
               </v-row>
               <v-row>
-                <v-col cols="8">Discount</v-col>
-                <v-col cols="4" class="text-right">฿0.00</v-col>
-              </v-row>
-              <v-divider class="mt-2 mb-2"></v-divider>
-              <v-row>
-                <v-col cols="8" class="font-weight-bold">Total</v-col>
-                <v-col cols="4" class="text-right font-weight-bold">฿{{ total }}</v-col>
+                <v-col>
+                  <v-btn block rounded class="white--text " color="#000000">Proceed to checkout</v-btn>
+                </v-col>
               </v-row>
             </v-card-text>
-            <v-card-actions class="d-flex justify-center">
-              <v-btn color="primary" @click="checkout">Proceed to Checkout</v-btn>
-            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
@@ -88,7 +113,7 @@ export default {
       this.total = this.apidata.data.reduce((sum, item) => sum + item.price, 0);
     },
     checkout() {
-      
+
     },
   },
 };
@@ -98,21 +123,22 @@ export default {
 .custom-breadcrumbs {
   margin-bottom: 20px;
 }
-.cart-title {
-  padding-left: 3vh;
-  font-size: 5vh;
-  font-family: sans-serif;
-  font-weight: 1000;
-}
+
 .product-card {
   margin-bottom: 20px;
   text-align: center;
 }
+
 .product-img {
   height: 200px;
   background-size: contain;
 }
+
 .summary-card {
   margin-top: 20px;
+}
+
+.custom-breadcrumbs-item a {
+  color: #000000;
 }
 </style>

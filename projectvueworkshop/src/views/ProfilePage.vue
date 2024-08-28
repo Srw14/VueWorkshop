@@ -52,17 +52,23 @@
           <v-card class="rounded-lg">
             <v-card-title>My Address</v-card-title>
             <v-card-subtitle>Manage your address</v-card-subtitle>
-            <v-divider style="width: 92%;margin-left: 2vh;  margin-bottom: 3vh;" class="border-opacity-100"></v-divider>
-            <v-row style="padding-left: 4vh;">
-              <v-col cols="11">
-                <v-text-field v-model="userData.email" label="Full Name*" clearable outlined
+            <v-divider style="width: 92%;margin-left: 2vh;  margin-bottom: 3vh" class="border-opacity-100"></v-divider>
+            <v-row style="padding-left: 4vh">
+              <v-col cols="5">
+                <v-combobox v-model="userData.firstname" label="Province*" clearable outlined class="input-field"></v-combobox>
+              </v-col>
+              <v-col cols="6">
+                <v-combobox v-model="userData.lastname" label="District*" clearable outlined class="input-field"></v-combobox>
+              </v-col>
+              <v-col cols="5" style="margin-top: -4vh">
+                <v-combobox v-model="userData.firstname" label="Sub-District*" clearable outlined class="input-field"></v-combobox>
+              </v-col>
+              <v-col cols="6" style="margin-top: -4vh">
+                <v-text-field v-model="userData.lastname" label="PhoneNumber*" clearable outlined class="input-field"></v-text-field>
+              </v-col>
+              <v-col cols="11" style="margin-top: -4vh">
+                <v-text-field v-model="userData.email" label="Address*" clearable outlined
                   class="input-field"></v-text-field>
-              </v-col>
-              <v-col cols="5" style="margin-top: -4vh;">
-                <v-text-field v-model="userData.firstname" label="FirstName*" clearable outlined class="input-field"></v-text-field>
-              </v-col>
-              <v-col cols="6" style="margin-top: -4vh;">
-                <v-text-field v-model="userData.lastname" label="LastName*" clearable outlined class="input-field"></v-text-field>
               </v-col>
             </v-row>
             <v-card-actions>
@@ -130,16 +136,16 @@
             <v-form>
               <v-row>
                 <v-col cols="12">
-                  <v-text-field label="Address"></v-text-field>
+                  <v-text-field v-model="postuser.address" :rules="addressRules" label="Address" required></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                  <v-select label="Province"></v-select>
+                  <v-combobox v-model="postuser.province" :rules="provinceRules" :items="provinceList" item-text="name_th" label="Province" @change="onProvinceChange" required editable></v-combobox>
                 </v-col>
                 <v-col cols="6">
-                  <v-select label="District"></v-select>
+                  <v-combobox v-model="postuser.amphure" :rules="amphureRules" :items="filteredAmphureList" item-text="name_th" label="District" @change="onAmphureChange" required editable></v-combobox>
                 </v-col>
                 <v-col cols="6">
-                  <v-select label="Sub-District"></v-select>
+                  <v-combobox v-model="postuser.tambon" :rules="tambonRules" :items="filteredTambonList" item-text="name_th" label="Sub-District" required editable></v-combobox>
                 </v-col>
                 <v-col cols="6">
                   <v-text-field label="Phone Number"></v-text-field>
@@ -150,7 +156,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn outlined color="#000" @click="close()">cancel</v-btn>
-            <v-btn class="white--text" color="#000">save</v-btn>
+            <v-btn class="white--text" color="#000" @click="putUserAddress()">save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -174,11 +180,19 @@ export default {
       descriptionRules: [ v => !!v || 'Description is required' ],
       mainimgRules: [ v => !!v || 'Main Img is required' ],
       imgRules: [ v => !!v || 'Img is required' ],
-      categorylist: [ 'T-shirts','Shirts','Polo Shirts'],
+      addressRules: [ v => !!v || 'Address is required' ],
+      provinceRules: [ v => !!v || 'Province is required'],
+      amphureRules: [ v => !!v || 'District is required'],
+      tambonRules: [ v => !!v || 'Sub-District is required'],
+      categorylist: [ 'T-shirts','Shirts','Polo Shirts' ],
       colorlist: [ 'Gray','Brown','Blue','Green','Orange','Red','Yellow','Purple','Pink','Black','White' ],
       sizelist:[ 'XS','S','M','L','XL','XXL','XXXL' ],
       brandlist:[ 'Nike','Zara','H&M','Uniqlo','Adidas' ],
       provinceList: [],
+      amphureList: [],
+      tambonList: [],
+      filteredAmphureList: [],
+      filteredTambonList: [],
       addressdialog: false,
       dialogedit: false,
       id: '',
@@ -213,6 +227,8 @@ export default {
   created() {
     this.getUserData();
     this.getProvince();
+    this.getAmphure();
+    this.getTambon();
   },
   methods: {
     open() {
@@ -228,6 +244,16 @@ export default {
     logout() {
       localStorage.clear();
       this.$router.push('/main')
+    },
+    onProvinceChange(){
+      this.filteredAmphureList = this.amphureList.filter(amphure => amphure.province_id === this.postuser.province.id);
+
+      this.postuser.amphure = '';
+      this.filteredTambonList = [];
+    },
+    onAmphureChange(){
+      this.filteredTambonList = this.tambonList.filter(tambon => tambon.amphure_id === this.postuser.amphure.id);
+      this.postuser.tambon = '';
     },
     async saveAddProduct() {
       try {
@@ -288,7 +314,7 @@ export default {
       });
     },
     getTambon() {
-      this.axios.get('http://127.0.0.1:3000/location/tombon/', {
+      this.axios.get('http://127.0.0.1:3000/location/tambon/', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,
         },
@@ -362,30 +388,34 @@ export default {
     },
     async putUserAddress() {
       try {
+        // เตรียมข้อมูลเพื่อส่งในการอัพเดตที่อยู่ผู้ใช้
+        const addressData = {
+          address: this.postuser.address,
+          province: this.postuser.province,
+          amphure: this.postuser.amphure,
+          tambon: this.postuser.tambon
+        };
+
         const UserID = localStorage.getItem("UserID");
-        if (UserID) {
-          const response = await fetch(`http://127.0.0.1:3000/users/location/${UserID}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `bearer ${localStorage.getItem("Token")}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              address: this.userData.address,
-              province: this.userData.province,
-              amphure: this.userData.amphure,
-              tambon: this.userData.tambon
-            })
-          });
-          const data = await response.json(); 
-          console.log(data)
-          alert('Profile updated complete')
-        } else {
-          console.error('No UserID found in localStorage'); 
-        }
+        
+        // ส่งคำขอ PUT เพื่ออัพเดตที่อยู่ของผู้ใช้
+        const { data } = await this.axios.put(`http://127.0.0.1:3000/users/location/${UserID}`, addressData, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("Token")}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log(data);
+        // รีเซ็ตข้อมูล postuser เพื่อให้ฟอร์มกลับไปอยู่ในสถานะเดิม
+        this.postuser = {
+          address: '',
+          province: '',
+          amphure: '',
+          tambon: '',
+        };
+        this.close();
       } catch (error) {
-        console.error('Error:', error.response ? error.response.data : error.message);
-        alert(error.respones ? error.respones.data.message: 'An unexpected error occurred')
+        console.error('Error updating address:', error);
       }
     },
   }

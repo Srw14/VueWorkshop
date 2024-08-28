@@ -20,7 +20,6 @@
               </v-col>
               <v-col cols="12" md="6">
                 <v-card-title class="headline">{{ product.productname }}</v-card-title>
-                <v-divider></v-divider>
                 <v-card-text style="font-size: 5vh;" class="my-3"> ฿{{ product.price }} </v-card-text>
                 <v-divider></v-divider>
                 <v-card-subtitle class="grey--text">
@@ -34,6 +33,9 @@
                   <v-chip-group v-model="selectedColor" class="mt-3" mandatory>
                     <v-chip v-for="(color, index) in colors" :key="index" :value="color" color="#000" outlined> {{ color }} </v-chip>
                   </v-chip-group>
+                </v-card-subtitle>
+                <v-card-subtitle class="grey--text">
+                  Quantity
                 </v-card-subtitle>
                 <v-card-text>{{ product.detail }}</v-card-text>
                 <v-card-actions>

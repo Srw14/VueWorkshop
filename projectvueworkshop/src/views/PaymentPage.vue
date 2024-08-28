@@ -14,6 +14,22 @@
             <v-col cols="12">
                 <p style="padding-left:3vh; font-size:5vh; font-family:sans-serif; font-weight:1000">Payment</p>
             </v-col>
+            <v-row>
+                <v-col cols="12" md="8">
+                    <v-card>
+                        <v-card-title >
+                            Delivery Address
+                        </v-card-title>
+                    </v-card>
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-card>
+                        <v-card-title>
+                            Payment Method
+                        </v-card-title>
+                    </v-card>
+                </v-col>
+            </v-row>
         </v-row>
     </v-container>
   </div>
